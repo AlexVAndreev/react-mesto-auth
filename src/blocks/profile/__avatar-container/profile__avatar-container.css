@@ -1,0 +1,17 @@
+.profile__avatar-container {
+  padding: 0;
+  width: 120px;
+  height: 120px;
+  border: none;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 60px;
+  /* z-index: ; */
+}
+.profile__avatar-container:hover {
+  background-image: url(../../../images/editAvatar_button.svg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 26px;
+  cursor: pointer;
+}

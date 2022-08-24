@@ -1,0 +1,15 @@
+.footer__copy {
+  font-size: 18px;
+  line-height: 1.1;
+  color: #545454;
+}
+@media (max-width: 880px) {
+  .footer__copy {
+    margin-left: 19px;
+  }
+}
+@media (max-width: 400px) {
+  .footer__copy {
+    font-size: 14px;
+  }
+}

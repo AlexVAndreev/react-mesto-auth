@@ -1,0 +1,10 @@
+.popup__confirm-container {
+  display: flex;
+  position: relative;
+  align-items: center;
+  flex-direction: column;
+  width: 430px;
+  background-color: white;
+  padding-bottom: 20px;
+  border-radius: 10px;
+}

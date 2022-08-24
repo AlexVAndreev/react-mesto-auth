@@ -1,0 +1,17 @@
+.popup__element-input {
+  /* margin-bottom: 15px; */
+  padding: 0;
+  border-style: none;
+  width: 80%;
+  height: 27px;
+  border-bottom: 1px rgba(0, 0, 0, 0.2) solid;
+  font-size: 14px;
+  line-height: 1.1;
+  font-weight: 400;
+}
+.popup__element-input:nth-child(2) {
+  margin: 24px auto 0;
+}
+.popup__element-input:nth-child(4) {
+  margin: 0 auto 0;
+}
