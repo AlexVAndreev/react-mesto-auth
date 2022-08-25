@@ -1,0 +1,18 @@
+.login-data__button {
+  height: 50px;
+  background: #fff;
+  border: none;
+  border-radius: 2px;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+  padding: 0;
+  margin-top: 186px;
+  margin-bottom: 15px;
+}
+
+.login-data__button:hover {
+  cursor: pointer;
+  opacity: 0.85;
+}

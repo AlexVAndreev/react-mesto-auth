@@ -10,15 +10,14 @@ export const register = (password, email, name, about, avatar) => {
     body: JSON.stringify({
       password,
       email,
-      name,
-      about,
-      avatar,
     }),
   })
     .then((response) => {
+      console.log(response);
       return response.json();
     })
     .then((res) => {
+      console.log(res);
       return res;
     })
     .catch((err) => console.log(err));
@@ -28,15 +27,23 @@ export const authorize = (password, email) => {
   return fetch(`${BASE_URL}/signin`, {
     method: "POST",
     headers: {
-      Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ password, email }),
+    body: JSON.stringify({ email, password }),
   })
-    .then((response) => response.json())
+    .then((response) => checkResult(response))
     .then((data) => {
-      localStorage.setItem("jwt", data.token);
-      console.log(data.token);
-    })
-    .catch((err) => console.log(err));
+      if (data.token) {
+        console.log(data.token);
+        localStorage.setItem("jwt", data.token);
+        return data.token;
+      }
+    });
 };
+
+function checkResult(res) {
+  if (res.ok) {
+    return res.json();
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}

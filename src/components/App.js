@@ -40,7 +40,6 @@ function App() {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [success, setSuccess] = React.useState(false);
 
-  const history = useHistory();
   const [successPopupOpen, setSuccessPopupOpen] = React.useState(false);
   const [failPopupOpen, setFailPopupOpen] = React.useState(false);
 
@@ -65,7 +64,8 @@ function App() {
   React.useEffect(() => {
     Promise.all([api.getInitialCards()])
       .then(([cardsData]) => {
-        setCards(cardsData);
+        // console.log(cardsData);
+        setCards(cardsData.data);
       })
       .catch((err) => {
         console.log(`Не удалось получить данные с сервера. ${err}`);
@@ -163,19 +163,24 @@ function App() {
         console.log(`Ошибка: ${err}`);
       });
   }
+  const history = useHistory();
 
   React.useEffect(() => {
     tokenCheck();
+    console.log("-------------");
+    console.log(loggedIn);
+    console.log("-------------");
   }, []);
 
   const tokenCheck = () => {
     let jwt = localStorage.getItem("jwt");
+    console.log(`My: ${jwt}`);
     if (jwt) {
       api.getUserInfo().then((res) => {
+        console.log(res);
         if (res) {
           setLoggedIn(true);
-          console.log(loggedIn);
-          history.push("/profile");
+          history.push("/");
         } else {
           localStorage.removeItem("jwt");
         }
@@ -195,15 +200,15 @@ function App() {
       ? setFailPopupOpen(!failPopupOpen)
       : setSuccessPopupOpen(!successPopupOpen);
   }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <section className="page">
         <Header />
         <Switch>
           <ProtectedRoute
-            path="/profile"
-            loggedIn={loggedIn}
+            exact
+            path="/"
+            loggedIn={true}
             component={Main}
             onEditAvatar={handleEditAvatarPopupOpen}
             onEditProfile={handleEditProfilePopupOpen}
@@ -219,8 +224,8 @@ function App() {
           <Route path="/sign-up">
             <Register notify={notify} popup={handleRegisterPopupOpen} />
           </Route>
-          <Route>
-            {<Redirect to={`/${loggedIn ? "profile" : "sign-in"}`} />}
+          <Route path="/">
+            {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>
         <Footer />
@@ -254,8 +259,7 @@ function App() {
           onClose={closeAllPopups}
         />
         <InfoTooltip
-          title="Что-то пошло не так!
-Попробуйте ещё раз."
+          title="Что-то пошло не так! Попробуйте ещё раз."
           image={bad}
           isOpen={failPopupOpen}
           onClose={closeAllPopups}

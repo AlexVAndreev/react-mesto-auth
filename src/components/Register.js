@@ -11,13 +11,7 @@ function Register(props) {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     auth
-      .register(
-        password,
-        email,
-        "Жак-Ив Густо",
-        "Исследователь",
-        "https://infokotiki.ru/wp-content/uploads/2019/01/kot-spit-s-visunutim-yazikom.jpg"
-      )
+      .register(password, email)
       .then((res) => {
         history.push("/sign-in");
         props.notify();

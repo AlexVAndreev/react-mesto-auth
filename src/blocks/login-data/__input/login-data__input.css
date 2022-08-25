@@ -1,0 +1,20 @@
+.login-data__input {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  font-family: inherit;
+  color: #fff;
+  border: none;
+  outline: none;
+  padding-bottom: 13px;
+  background-color: transparent;
+  border-bottom: 2px solid #ccc;
+  margin-bottom: 30px;
+}
+
+.login-data__input::placeholder {
+  color: #ccc;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+}

@@ -25,7 +25,7 @@ function Login(props) {
       .then((res) => {
         resetForm();
         props.onAuth();
-        history.push("/profile");
+        history.push("/");
       })
       .catch((error) => {
         console.log(
@@ -35,26 +35,26 @@ function Login(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off" className="user-data">
-      <p className="user-data__title">Вход</p>
+    <form onSubmit={handleSubmit} autoComplete="off" className="login-data">
+      <p className="login-data__title">Вход</p>
       <input
-        className="user-data__input"
+        className="login-data__input"
         placeholder="Email"
         type="email"
         value={email}
         onChange={(evt) => setEmail(evt.target.value)}
       ></input>
       <input
-        className="user-data__input"
+        className="login-data__input"
         placeholder="Пароль"
         type="password"
         value={password}
         onChange={(evt) => setPassword(evt.target.value)}
       ></input>
-      <button className="user-data__button">Войти</button>
-      <div className="user-data__string">
-        <span className="user-data__question">Еще не зарегистрированы?</span>
-        <Link to="sign-up" className="user-data__question-button">
+      <button className="login-data__button">Войти</button>
+      <div className="login-data__span">
+        <span className="login-data__question">Еще не зарегистрированы?</span>
+        <Link to="sign-up" className="login-data__question-button">
           Регистрация
         </Link>
       </div>
