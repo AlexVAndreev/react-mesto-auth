@@ -1,0 +1,22 @@
+.login-data__question-button {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 17px;
+  border: none;
+  background-color: transparent;
+  color: #fff;
+  text-decoration: none;
+}
+
+.login-data__question-button:hover {
+  cursor: pointer;
+  opacity: 0.6;
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 750px) {
+  .login-data__question-button {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

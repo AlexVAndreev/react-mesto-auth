@@ -7,7 +7,7 @@ function InfoTooltip(props) {
         <button
           type="button"
           aria-label="close"
-          className="popup__button-close"
+          className="popup__close-icon"
           onClick={props.onClose}
         ></button>
         <img src={props.image} alt="" className="popup__image-result" />

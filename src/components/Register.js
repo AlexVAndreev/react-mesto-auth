@@ -26,10 +26,10 @@ function Register(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off" className="user-data">
-      <p className="user-data__title">Регистрация</p>
+    <form onSubmit={handleSubmit} autoComplete="off" className="login-data">
+      <p className="login-data__title">Регистрация</p>
       <input
-        className="user-data__input"
+        className="login-data__input"
         placeholder="Email"
         type="email"
         value={email}
@@ -37,17 +37,17 @@ function Register(props) {
         required
       ></input>
       <input
-        className="user-data__input"
+        className="login-data__input"
         placeholder="Пароль"
         type="password"
         value={password}
         onChange={(evt) => setPassword(evt.target.value)}
         required
       ></input>
-      <button className="user-data__button">Зарегистрироваться</button>
-      <div className="user-data__string">
-        <span className="user-data__question">Вы уже зарегистрированы?</span>
-        <Link to="sign-in" className="user-data__question-button">
+      <button className="login-data__button">Зарегистрироваться</button>
+      <div className="login-data__string">
+        <span className="login-data__question">Вы уже зарегистрированы?</span>
+        <Link to="sign-in" className="login-data__question-button">
           Войти
         </Link>
       </div>
