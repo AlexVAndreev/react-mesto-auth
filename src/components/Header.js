@@ -5,13 +5,13 @@ import api from "../utils/Api";
 
 function Header() {
   const history = useHistory();
+  const [email, setEmail] = useState("");
 
   function signOut() {
     localStorage.removeItem("jwt");
+    setEmail("");
     history.push("/sign-in");
   }
-
-  const [email, setEmail] = useState("");
 
   React.useEffect(() => {
     api
@@ -26,26 +26,29 @@ function Header() {
   return (
     <header className="header">
       <img src={logo} alt="логотип" className="header__logo" />
-      <Switch>
-        <Route path="/">
-          <div>
-            <span className="header__title-email">{email}</span>
-            <button className="header__button" onClick={signOut}>
-              Выйти
-            </button>
-          </div>
-        </Route>
-        <Route path="/sign-up">
-          <Link to="sign-in" className="header__title">
-            Войти
-          </Link>
-        </Route>
-        <Route path="/sign-in">
-          <Link to="sign-up" className="header__title">
-            Регистрация
-          </Link>
-        </Route>
-      </Switch>
+
+      <div className="header__info">
+        <Switch>
+          <Route exact path="/">
+            <p className="header__mail">{email}</p>
+            <Link to="/sign-in" onClick={signOut} className="header__button">
+              Выход
+            </Link>
+          </Route>
+
+          <Route path="/sign-in">
+            <Link to="/sign-up" className="header__button">
+              Регистрация
+            </Link>
+          </Route>
+
+          <Route path="/sign-up">
+            <Link to="sign-in" className="header__button">
+              Войти
+            </Link>
+          </Route>
+        </Switch>
+      </div>
     </header>
   );
 }

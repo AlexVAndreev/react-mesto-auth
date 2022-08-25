@@ -45,12 +45,6 @@ function Register(props) {
         required
       ></input>
       <button className="login-data__button">Зарегистрироваться</button>
-      <div className="login-data__string">
-        <span className="login-data__question">Вы уже зарегистрированы?</span>
-        <Link to="sign-in" className="login-data__question-button">
-          Войти
-        </Link>
-      </div>
     </form>
   );
 }

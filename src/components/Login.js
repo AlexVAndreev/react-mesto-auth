@@ -52,12 +52,6 @@ function Login(props) {
         onChange={(evt) => setPassword(evt.target.value)}
       ></input>
       <button className="login-data__button">Войти</button>
-      <div className="login-data__span">
-        <span className="login-data__question">Еще не зарегистрированы?</span>
-        <Link to="sign-up" className="login-data__question-button">
-          Регистрация
-        </Link>
-      </div>
     </form>
   );
 }

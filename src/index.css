@@ -3,6 +3,9 @@
 @import url(./blocks/page/page.css);
 @import url(./blocks/main-container/main-container.css);
 @import url(./blocks/header/header.css);
+@import url(./blocks/header/__button/header__button.css);
+@import url(./blocks/header/__mail/header__mail.css);
+@import url(./blocks/header/__info/header__info.css);
 @import url(./blocks/logo/logo.css);
 
 /* profile */

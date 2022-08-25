@@ -1,13 +1,31 @@
 .header {
   max-width: 880px;
-  margin: auto;
+  margin: 0 auto;
+  padding: 0;
+  padding-left: 25px;
+  padding-right: 25px;
   padding-top: 45px;
-  min-height: 74px;
-  border-bottom: 1px grey solid;
+  padding-bottom: 40px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+
+  font-family: "Inter", sans-serif;
 }
-@media (max-width: 400px) {
+
+@media (max-width: 880px) {
   .header {
-    min-height: 56px;
     padding-top: 28px;
+  }
+}
+
+@media (max-width: 550px) {
+  .header {
+    padding-left: 0;
+    padding-right: 0;
   }
 }
