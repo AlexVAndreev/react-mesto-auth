@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "./Header";
-import Main from "./Main";
+import Main from "./Main.js";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import api from "../utils/Api";
@@ -8,6 +8,13 @@ import CurrentUserContext from "../context/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import Register from "./Register.js";
+import Login from "./Login.js";
+import InfoTooltip from "./InfoToolTip";
+import ProtectedRoute from "./ProtectedRoute";
+import ok from "../images/ok.svg";
+import bad from "../images/bad.svg";
 
 function App() {
   const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
@@ -29,6 +36,13 @@ function App() {
     isEditProfilePopupOpen ||
     isAddPlacePopupOpen ||
     isImagePopupOpen;
+  // --------------------------------//
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [success, setSuccess] = React.useState(false);
+
+  const history = useHistory();
+  const [successPopupOpen, setSuccessPopupOpen] = React.useState(false);
+  const [failPopupOpen, setFailPopupOpen] = React.useState(false);
 
   React.useEffect(() => {
     function closeByEscape(evt) {
@@ -76,6 +90,8 @@ function App() {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setIsImagePopupOpen(false);
+    setFailPopupOpen(false);
+    setSuccessPopupOpen(false);
   }
 
   function handleCardClick(card) {
@@ -148,19 +164,65 @@ function App() {
       });
   }
 
+  React.useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  const tokenCheck = () => {
+    let jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      api.getUserInfo().then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          console.log(loggedIn);
+          history.push("/profile");
+        } else {
+          localStorage.removeItem("jwt");
+        }
+      });
+    }
+  };
+
+  function notify() {
+    setSuccess(true);
+  }
+
+  function onAuth() {
+    setLoggedIn(true);
+  }
+  function handleRegisterPopupOpen() {
+    success
+      ? setFailPopupOpen(!failPopupOpen)
+      : setSuccessPopupOpen(!successPopupOpen);
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <section className="page">
         <Header />
-        <Main
-          cards={cards}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-          onEditAvatar={handleEditAvatarPopupOpen}
-          onEditProfile={handleEditProfilePopupOpen}
-          onAddPlace={handleAddPlacePopupOpen}
-          onCardClick={handleCardClick}
-        />
+        <Switch>
+          <ProtectedRoute
+            path="/profile"
+            loggedIn={loggedIn}
+            component={Main}
+            onEditAvatar={handleEditAvatarPopupOpen}
+            onEditProfile={handleEditProfilePopupOpen}
+            onAddPlace={handleAddPlacePopupOpen}
+            cards={cards}
+            onCardLike={handleCardLike}
+            onCardClick={handleCardClick}
+            onCardDelete={handleCardDelete}
+          />
+          <Route path="/sign-in">
+            <Login onAuth={onAuth} tokenCheck={tokenCheck} />
+          </Route>
+          <Route path="/sign-up">
+            <Register notify={notify} popup={handleRegisterPopupOpen} />
+          </Route>
+          <Route>
+            {<Redirect to={`/${loggedIn ? "profile" : "sign-in"}`} />}
+          </Route>
+        </Switch>
         <Footer />
 
         <EditAvatarPopup
@@ -183,6 +245,19 @@ function App() {
         <ImagePopup
           card={selectedCard}
           isOpen={isImagePopupOpen}
+          onClose={closeAllPopups}
+        />
+        <InfoTooltip
+          title="Вы успешно зарегистрировались!"
+          image={ok}
+          isOpen={successPopupOpen}
+          onClose={closeAllPopups}
+        />
+        <InfoTooltip
+          title="Что-то пошло не так!
+Попробуйте ещё раз."
+          image={bad}
+          isOpen={failPopupOpen}
           onClose={closeAllPopups}
         />
       </section>
