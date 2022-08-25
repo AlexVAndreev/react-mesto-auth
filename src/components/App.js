@@ -173,7 +173,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-  }, [loggedIn]);
+  }, []);
 
   const tokenCheck = () => {
     let jwt = localStorage.getItem("jwt");

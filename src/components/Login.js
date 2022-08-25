@@ -35,7 +35,7 @@ function Login(props) {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off" className="login-data">
+    <form onSubmit={handleSubmit} className="login-data">
       <p className="login-data__title">Вход</p>
       <input
         className="login-data__input"
