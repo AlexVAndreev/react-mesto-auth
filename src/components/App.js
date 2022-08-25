@@ -8,7 +8,13 @@ import CurrentUserContext from "../context/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  Redirect,
+  useHistory,
+  withRouter,
+} from "react-router-dom";
 import Register from "./Register.js";
 import Login from "./Login.js";
 import InfoTooltip from "./InfoToolTip";
@@ -167,10 +173,7 @@ function App() {
 
   React.useEffect(() => {
     tokenCheck();
-    console.log("-------------");
-    console.log(loggedIn);
-    console.log("-------------");
-  }, []);
+  }, [loggedIn]);
 
   const tokenCheck = () => {
     let jwt = localStorage.getItem("jwt");
@@ -208,7 +211,7 @@ function App() {
           <ProtectedRoute
             exact
             path="/"
-            loggedIn={true}
+            loggedIn={loggedIn}
             component={Main}
             onEditAvatar={handleEditAvatarPopupOpen}
             onEditProfile={handleEditProfilePopupOpen}
