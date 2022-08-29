@@ -1,9 +1,9 @@
 import React from "react";
+import api from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main.js";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
-import api from "../utils/Api";
 import CurrentUserContext from "../context/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -38,7 +38,7 @@ function App() {
     isAddPlacePopupOpen ||
     isImagePopupOpen;
   // --------------------------------//
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] =
     React.useState(false);
 
@@ -46,6 +46,25 @@ function App() {
   const [failPopupOpen, setFailPopupOpen] = React.useState(false);
 
   const history = useHistory();
+  React.useEffect(() => {
+    api.getUserInfo()
+        .then((data) => {
+            setCurrentUser(data);
+        })
+        .catch((err) => console.log(err))
+        .finally(console.log(currentUser));
+}, [isLoggedIn,history])
+
+React.useEffect(() => {
+    api.getInitialCards()
+        .then((cards) => {
+            setCards(cards);
+        })
+        .catch((err) => {
+            console.log(err);
+        }).finally(console.log(cards))
+
+}, [])
 
   React.useEffect(() => {
     function closeByEscape(evt) {
@@ -77,19 +96,21 @@ function App() {
     }
   }, [isLoggedIn, history]);
 
-  React.useEffect(() => {
-    Promise.all([api.getInitialCards(), api.getUserInfo()])
-      .then(([cardsData, userData]) => {
-        setCards(cardsData.data);
-        setCurrentUser(userData.data);
-      })
-      .catch((err) => {
-        console.log(`Не удалось получить данные с сервера. ${err}`);
-      })
-      .finally(() => {
-        console.log(cards);
-      });
-  }, []);
+  // React.useEffect(() => {
+  //   Promise.all([ api.getUserInfo(),api.getInitialCards()])
+  //     .then(([userData,cardsData]) => {
+  //       setCards(cardsData.data);
+  //       setCurrentUser(userData.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(`Не удалось получить данные с сервера. ${err}`);
+  //     })
+  //     .finally(() => {
+  //       console.log(currentUser);
+  //       console.log(cards);
+  //     });
+  // }, []);
+
 
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -225,11 +246,10 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <section className="page">
-        <Header email={currentUser.email} signOut={signOut} />
+        <Header email={emailValue} signOut={signOut} />
         <Switch>
           <ProtectedRoute
-            exact
-            path="/"
+            exact path="/"
             isLoggedIn={isLoggedIn}
             component={Main}
             onEditAvatar={handleEditAvatarPopupOpen}
@@ -247,7 +267,6 @@ function App() {
             <Register notify={notify} popup={handleInfoPopupOpen} />
           </Route>
           <Route path="/">
-            {console.log(`isLOggedIN ${isLoggedIn}`)}
             {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
         </Switch>

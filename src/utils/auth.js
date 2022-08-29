@@ -13,12 +13,7 @@ export const register = (password, email) => {
     }),
   })
     .then((response) => {
-      console.log(response);
-      return response.json();
-    })
-    .then((res) => {
-      console.log(res);
-      return res;
+      checkResult(response)
     })
     .catch((err) => console.log(err));
 };
@@ -50,7 +45,7 @@ export const getContent = (token) => {
     },
   })
     .then((response) => checkResult(response))
-    .then((data) => data);
+    .then((data) => data).catch((err) => console.log(err));
 };
 
 function checkResult(res) {
