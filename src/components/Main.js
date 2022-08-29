@@ -5,7 +5,6 @@ import CurrentUserContext from "../context/CurrentUserContext";
 
 function Main(props) {
   const currentUser = React.useContext(CurrentUserContext);
-  console.log(currentUser);
   return (
     <main className="main-container">
       <section className="profile">
@@ -13,19 +12,19 @@ function Main(props) {
           <img
             className="profile__avatar"
             alt="Аватарка профиля"
-            src={currentUser.data.avatar}
+            src={currentUser.avatar}
             onClick={props.onEditAvatar}
           />
         </div>
         <div className="profile__profile-info">
-          <h1 className="profile__title">{currentUser.data.name}</h1>
+          <h1 className="profile__title">{currentUser.name}</h1>
           <button
             className="profile__edit-button"
             name="profile-edit-button"
             type="button"
             onClick={props.onEditProfile}
           ></button>
-          <p className="profile__subtitle">{currentUser.data.about}</p>
+          <p className="profile__subtitle">{currentUser.about}</p>
         </div>
         <button
           className="profile__add-button"

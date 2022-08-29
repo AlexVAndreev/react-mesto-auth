@@ -85,14 +85,14 @@ class Api {
     }
   }
   likeCard(id) {
-    return fetch(`${this._Url}/cards/${id}/likes`, {
+    return fetch(`${this._Url}cards/${id}/likes`, {
       method: "PUT",
       headers: this._headers,
     }).then((res) => this._sendRequest(res));
   }
 
   dislikeCard(id) {
-    return fetch(`${this._Url}/cards/likes/${id}`, {
+    return fetch(`${this._Url}cards/${id}/likes`, {
       method: "DELETE",
       headers: this._headers,
     }).then((res) => this._sendRequest(res));

@@ -1,38 +1,17 @@
-import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
-import * as auth from "../auth";
+import React from "react";
 
-function Login(props) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Login({ authorization }) {
+  const [emailValue, setEmailValue] = React.useState("");
+  const [passwordValue, setPasswordValue] = React.useState("");
 
-  const history = useHistory();
-
-  const resetForm = () => {
-    setPassword("");
-    setEmail("");
-  };
-
-  const handleSubmit = (evt) => {
+  function handleSubmit(evt) {
     evt.preventDefault();
 
-    if (!email || !password) {
-      return;
-    }
+    const password = passwordValue;
+    const email = emailValue;
 
-    auth
-      .authorize(password, email)
-      .then((res) => {
-        resetForm();
-        props.onAuth();
-        history.push("/");
-      })
-      .catch((error) => {
-        console.log(
-          "Что-то пошло не так!" || error.message[0].messages[0].message
-        );
-      });
-  };
+    authorization(email, password);
+  }
 
   return (
     <form onSubmit={handleSubmit} className="login-data">
@@ -41,15 +20,15 @@ function Login(props) {
         className="login-data__input"
         placeholder="Email"
         type="email"
-        value={email}
-        onChange={(evt) => setEmail(evt.target.value)}
+        value={emailValue}
+        onChange={(evt) => setEmailValue(evt.target.value)}
       ></input>
       <input
         className="login-data__input"
         placeholder="Пароль"
         type="password"
-        value={password}
-        onChange={(evt) => setPassword(evt.target.value)}
+        value={passwordValue}
+        onChange={(evt) => setPasswordValue(evt.target.value)}
       ></input>
       <button className="login-data__button">Войти</button>
     </form>

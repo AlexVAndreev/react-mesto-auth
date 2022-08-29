@@ -1,37 +1,20 @@
 import React, { useState } from "react";
 import { Link, Route, Switch, useHistory } from "react-router-dom";
 import logo from "../images/logo.svg";
-import api from "../utils/Api";
 
-function Header() {
-  const history = useHistory();
-  const [email, setEmail] = useState("");
-
-  function signOut() {
-    localStorage.removeItem("jwt");
-    setEmail("");
-    history.push("/sign-in");
-  }
-
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((res) => {
-        console.log(res);
-        setEmail(res.data.email);
-      })
-      .catch((e) => console.log(e.message));
-  }, []);
-
+function Header(props) {
   return (
     <header className="header">
       <img src={logo} alt="логотип" className="header__logo" />
-
       <div className="header__info">
         <Switch>
           <Route exact path="/">
-            <p className="header__mail">{email}</p>
-            <Link to="/sign-in" onClick={signOut} className="header__button">
+            <p className="header__mail">{props.email}</p>
+            <Link
+              to="/sign-in"
+              onClick={props.signOut}
+              className="header__button"
+            >
               Выход
             </Link>
           </Route>

@@ -3,10 +3,9 @@ import CurrentUserContext from "../context/CurrentUserContext";
 
 function Card({ card, onCardClick, onCardLike, onCardDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
-
-  const isOwner = card.owner._id === currentUser._id;
-  const isLiked = card.likes.some((person) => person._id === currentUser._id);
-
+  const isOwner = card.owner === currentUser._id;
+  const isLiked = card.likes.some((i) => i === currentUser._id);
+  console.log(card);
   const cardDeleteButtonClassName = `element__basket ${
     isOwner ? "" : "element__basket_disabled"
   }`;
