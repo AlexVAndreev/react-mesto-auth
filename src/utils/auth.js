@@ -38,8 +38,7 @@ export const getContent = (token) => {
     },
   })
     .then((response) => checkResult(response))
-    .then((data) => data)
-    .catch((err) => console.log(err));
+    .then((data) => data);
 };
 
 function checkResult(res) {

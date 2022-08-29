@@ -31,54 +31,37 @@ function App() {
   });
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [cards, setCards] = React.useState([]);
-
-  const isAnyPopupOpened =
-    isEditAvatarPopupOpen ||
-    isEditProfilePopupOpen ||
-    isAddPlacePopupOpen ||
-    isImagePopupOpen;
-  // --------------------------------//
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
   const [infoPopupStatus, setInfoPopupStatus] = React.useState({
     src: "",
     message: "",
   });
-
   const history = useHistory();
-  React.useEffect(() => {
-    api
-      .getUserInfo()
-      .then((data) => {
-        setCurrentUser(data);
-      })
-      .catch((err) => console.log(err));
-  }, [isLoggedIn, history]);
 
   React.useEffect(() => {
-    api
-      .getInitialCards()
-      .then((cards) => {
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (isLoggedIn) {
+      api
+        .getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   React.useEffect(() => {
-    function closeByEscape(evt) {
-      if (evt.key === "Escape") {
-        closeAllPopups();
-      }
+    if (isLoggedIn) {
+      api
+        .getInitialCards()
+        .then((cards) => {
+          setCards(cards);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    if (isAnyPopupOpened) {
-      document.addEventListener("keydown", closeByEscape);
-      return () => {
-        document.removeEventListener("keydown", closeByEscape);
-      };
-    }
-  }, [isAnyPopupOpened]);
+  }, [isLoggedIn]);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
@@ -94,7 +77,7 @@ function App() {
         })
         .catch((err) => console.log(err));
     }
-  }, [isLoggedIn, history]);
+  }, []);
 
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -165,7 +148,8 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards(cards.filter((item) => item !== card));
+        const newCard = cards.filter((item) => item !== card);
+        setCards(newCard);
       })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
@@ -178,9 +162,6 @@ function App() {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .then(() => {
-        setAddPlacePopupOpen(false);
-      })
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
@@ -190,7 +171,7 @@ function App() {
     setIsInfoPopupOpen(true);
   }
 
-  function authorization(email, password) {
+  function authorize(email, password) {
     auth
       .authorize(email, password)
       .then(() => {
@@ -216,7 +197,7 @@ function App() {
     history.push("/sign-in");
   }
 
-  function registration(email, password) {
+  function register(email, password) {
     auth
       .register(email, password)
       .then(() => {
@@ -232,7 +213,6 @@ function App() {
           message: "Что-то пошло не так! Попробуйте ещё раз.",
         });
         setTimeout(history.push, 3000, "/sign-up");
-        console.log("no");
       })
       .finally(() => {
         handleInfoPopupOpen();
@@ -259,10 +239,10 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <Route path="/sign-in">
-            <Login authorization={authorization} popup={handleInfoPopupOpen} />
+            <Login authorize={authorize} popup={handleInfoPopupOpen} />
           </Route>
           <Route path="/sign-up">
-            <Register registration={registration} />
+            <Register register={register} />
           </Route>
           <Route path="/">
             {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}

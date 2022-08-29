@@ -1,6 +1,19 @@
 import React from "react";
 
 function ImagePopup({ card, isOpen, onClose }) {
+  React.useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        onClose();
+      }
+    }
+    if (isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [isOpen]);
   return (
     <section
       className={`popup popup_image popup_cards  ${

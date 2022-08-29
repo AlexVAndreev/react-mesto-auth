@@ -1,6 +1,20 @@
 import React from "react";
 
 function PopupWithForm(props) {
+  React.useEffect(() => {
+    function closeByEscape(evt) {
+      if (evt.key === "Escape") {
+        props.onClose();
+      }
+    }
+    if (props.isOpen) {
+      document.addEventListener("keydown", closeByEscape);
+      return () => {
+        document.removeEventListener("keydown", closeByEscape);
+      };
+    }
+  }, [props.isOpen]);
+
   return (
     <section
       className={`popup popup_${props.name} ${props.isOpen && "popup_opened"}`}

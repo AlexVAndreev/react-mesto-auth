@@ -2,17 +2,14 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth";
 
-function Register({registration}) {
+function Register({ register }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const history = useHistory();
-
-
-function handleSubmit(evt) {
+  function handleSubmit(evt) {
     evt.preventDefault();
-   registration(email, password);
-}
+    register(email, password);
+  }
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off" className="login-data">

@@ -13,6 +13,6 @@
   .popup__container {
     width: 282px;
     padding-bottom: 25px;
-    margin-top: 200px;
+    /* margin-top: 200px; */
   }
 }
