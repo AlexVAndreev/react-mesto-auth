@@ -13,11 +13,11 @@ function Register(props) {
     auth
       .register(password, email)
       .then((res) => {
-        history.push("/sign-in");
         props.notify();
         props.popup();
       })
       .catch((err) => {
+        history.push("/sign-up")
         console.log(
           "Что-то пошло не так!" || err.message[0].messages[0].message
         );

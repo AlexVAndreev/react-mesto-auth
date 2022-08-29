@@ -96,22 +96,6 @@ React.useEffect(() => {
     }
   }, [isLoggedIn, history]);
 
-  // React.useEffect(() => {
-  //   Promise.all([ api.getUserInfo(),api.getInitialCards()])
-  //     .then(([userData,cardsData]) => {
-  //       setCards(cardsData.data);
-  //       setCurrentUser(userData.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(`Не удалось получить данные с сервера. ${err}`);
-  //     })
-  //     .finally(() => {
-  //       console.log(currentUser);
-  //       console.log(cards);
-  //     });
-  // }, []);
-
-
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
   }
@@ -205,21 +189,6 @@ React.useEffect(() => {
       });
   }
 
-  // React.useEffect(() => {
-  //   const jwt = localStorage.getItem("jwt");
-  //   if (jwt) {
-  //     auth
-  //       .getContent(jwt)
-  //       .then((res) => {
-  //         if (res) {
-  //           setEmailValue(res.data.email);
-  //         }
-  //         setIsLoggedIn(true);
-  //         history.push("/");
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [isLoggedIn, history]);
 
   function authorization(email, password) {
     auth.authorize(email, password);
@@ -231,6 +200,7 @@ React.useEffect(() => {
   }
   function signOut() {
     localStorage.removeItem("jwt");
+    setIsLoggedIn(false);
     history.push("/sign-in");
   }
 
