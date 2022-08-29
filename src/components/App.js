@@ -203,7 +203,7 @@ function App() {
       .catch(() => {
         setInfoPopupStatus({
           src: bad,
-          message: "Что-то пошло не так! Попробуйте ещё раз.",
+          message: "Логин или пароль неверный!",
         });
         handleInfoPopupOpen();
         setTimeout(closeAllPopups, 2000);
