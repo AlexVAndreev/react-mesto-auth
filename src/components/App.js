@@ -192,13 +192,15 @@ function handleInfoPopupOpen() {
 }
 
   function authorization(email, password) {
-    auth.authorize(email, password);
+    auth.authorize(email, password).then(
+      ()=>{
     if (email !== emailValue) {
       setEmailValue(email);
     }
     setIsLoggedIn(true);
-    history.push("/");
+    history.push("/");})
   }
+
   function signOut() {
     localStorage.removeItem("jwt");
     setIsLoggedIn(false);
