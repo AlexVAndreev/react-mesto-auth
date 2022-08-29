@@ -199,6 +199,15 @@ function handleInfoPopupOpen() {
     }
     setIsLoggedIn(true);
     history.push("/");})
+    .catch(()=>{
+      setInfoPopupStatus({
+      src: bad,
+      message: 'Что-то пошло не так! Попробуйте ещё раз.',
+  });
+     handleInfoPopupOpen();
+     setTimeout(closeAllPopups, 2000);
+
+    })
   }
 
   function signOut() {
