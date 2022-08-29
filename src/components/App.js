@@ -50,7 +50,7 @@ function App() {
             setCurrentUser(data);
         })
         .catch((err) => console.log(err))
-        .finally(console.log(currentUser));
+        
 }, [isLoggedIn,history])
 
 React.useEffect(() => {
@@ -60,7 +60,7 @@ React.useEffect(() => {
         })
         .catch((err) => {
             console.log(err);
-        }).finally(console.log(cards))
+        })
 
 }, [])
 

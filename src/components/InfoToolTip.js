@@ -1,9 +1,6 @@
 import React from "react";
 
 function InfoTooltip({ isOpen, onClose, infoPopupStatus }) {
-  console.log(isOpen);
-  console.log(onClose);
-  console.log(infoPopupStatus);
   return (
     <section className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <form action="#" className="popup__container">
