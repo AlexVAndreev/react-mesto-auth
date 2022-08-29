@@ -39,30 +39,32 @@ function App() {
     isImagePopupOpen;
   // --------------------------------//
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [isInfoPopupOpen, setIsInfoPopupOpen] =
-    React.useState(false);
-  const [infoPopupStatus, setInfoPopupStatus] = React.useState({ src: '', message: '' })
+  const [isInfoPopupOpen, setIsInfoPopupOpen] = React.useState(false);
+  const [infoPopupStatus, setInfoPopupStatus] = React.useState({
+    src: "",
+    message: "",
+  });
 
   const history = useHistory();
   React.useEffect(() => {
-    api.getUserInfo()
-        .then((data) => {
-            setCurrentUser(data);
-        })
-        .catch((err) => console.log(err))
-        
-}, [isLoggedIn,history])
+    api
+      .getUserInfo()
+      .then((data) => {
+        setCurrentUser(data);
+      })
+      .catch((err) => console.log(err));
+  }, [isLoggedIn, history]);
 
-React.useEffect(() => {
-    api.getInitialCards()
-        .then((cards) => {
-            setCards(cards);
-        })
-        .catch((err) => {
-            console.log(err);
-        })
-
-}, [])
+  React.useEffect(() => {
+    api
+      .getInitialCards()
+      .then((cards) => {
+        setCards(cards);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   React.useEffect(() => {
     function closeByEscape(evt) {
@@ -111,8 +113,7 @@ React.useEffect(() => {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setIsImagePopupOpen(false);
-    setIsInfoPopupOpen(false)
- 
+    setIsInfoPopupOpen(false);
   }
 
   function handleCardClick(card) {
@@ -185,29 +186,28 @@ React.useEffect(() => {
       });
   }
 
-
-
-function handleInfoPopupOpen() {
-        setIsInfoPopupOpen(true);
-}
+  function handleInfoPopupOpen() {
+    setIsInfoPopupOpen(true);
+  }
 
   function authorization(email, password) {
-    auth.authorize(email, password).then(
-      ()=>{
-    if (email !== emailValue) {
-      setEmailValue(email);
-    }
-    setIsLoggedIn(true);
-    history.push("/");})
-    .catch(()=>{
-      setInfoPopupStatus({
-      src: bad,
-      message: 'Что-то пошло не так! Попробуйте ещё раз.',
-  });
-     handleInfoPopupOpen();
-     setTimeout(closeAllPopups, 2000);
-
-    })
+    auth
+      .authorize(email, password)
+      .then(() => {
+        if (email !== emailValue) {
+          setEmailValue(email);
+        }
+        setIsLoggedIn(true);
+        history.push("/");
+      })
+      .catch(() => {
+        setInfoPopupStatus({
+          src: bad,
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        handleInfoPopupOpen();
+        setTimeout(closeAllPopups, 2000);
+      });
   }
 
   function signOut() {
@@ -216,29 +216,29 @@ function handleInfoPopupOpen() {
     history.push("/sign-in");
   }
 
-
   function registration(email, password) {
-    auth.register(email, password)
-        .then(() => {
-            setInfoPopupStatus({
-                src: ok,
-                message: 'Вы успешно зарегистрировались!',
-            })
-            setTimeout(history.push, 3000, "/sign-in");
-        })
-        .catch(() => {
-            setInfoPopupStatus({
-                src: bad,
-                message: 'Что-то пошло не так! Попробуйте ещё раз.',
-            })
-            setTimeout(history.push, 3000, "/sign-up")
-            console.log('no');
-        })
-        .finally(() => {
-            handleInfoPopupOpen();
-            setTimeout(closeAllPopups, 4000);
-        })
-}
+    auth
+      .register(email, password)
+      .then(() => {
+        setInfoPopupStatus({
+          src: ok,
+          message: "Вы успешно зарегистрировались!",
+        });
+        setTimeout(history.push, 3000, "/sign-in");
+      })
+      .catch(() => {
+        setInfoPopupStatus({
+          src: bad,
+          message: "Что-то пошло не так! Попробуйте ещё раз.",
+        });
+        setTimeout(history.push, 3000, "/sign-up");
+        console.log("no");
+      })
+      .finally(() => {
+        handleInfoPopupOpen();
+        setTimeout(closeAllPopups, 4000);
+      });
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -246,7 +246,8 @@ function handleInfoPopupOpen() {
         <Header email={emailValue} signOut={signOut} />
         <Switch>
           <ProtectedRoute
-            exact path="/"
+            exact
+            path="/"
             isLoggedIn={isLoggedIn}
             component={Main}
             onEditAvatar={handleEditAvatarPopupOpen}
@@ -261,7 +262,7 @@ function handleInfoPopupOpen() {
             <Login authorization={authorization} popup={handleInfoPopupOpen} />
           </Route>
           <Route path="/sign-up">
-            <Register registration={registration}/>
+            <Register registration={registration} />
           </Route>
           <Route path="/">
             {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
