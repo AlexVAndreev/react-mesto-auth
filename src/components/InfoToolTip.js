@@ -1,17 +1,20 @@
 import React from "react";
 
-function InfoTooltip(props) {
+function InfoTooltip({ isOpen, onClose, infoPopupStatus }) {
+  console.log(isOpen);
+  console.log(onClose);
+  console.log(infoPopupStatus);
   return (
-    <section className={`popup ${props.isOpen ? "popup_opened" : ""}`}>
+    <section className={`popup ${isOpen ? "popup_opened" : ""}`}>
       <form action="#" className="popup__container">
         <button
           type="button"
           aria-label="close"
           className="popup__close-icon"
-          onClick={props.onClose}
+          onClick={onClose}
         ></button>
-        <img src={props.image} alt="" className="popup__image-result" />
-        <h2 className="popup__title">{props.title}</h2>
+        <img src={infoPopupStatus.src} alt="" className="popup__image-result" />
+        <h2 className="popup__title">{infoPopupStatus.message}</h2>
       </form>
     </section>
   );

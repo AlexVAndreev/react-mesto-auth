@@ -1,6 +1,6 @@
 import React from "react";
 import Card from "./Card";
-// import "../index.css";
+import "../index.css";
 import CurrentUserContext from "../context/CurrentUserContext";
 
 function Main(props) {

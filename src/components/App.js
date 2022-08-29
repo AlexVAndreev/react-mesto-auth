@@ -39,8 +39,9 @@ function App() {
     isImagePopupOpen;
   // --------------------------------//
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [isSuccessTooltipStatus, setIsSuccessTooltipStatus] =
+  const [isInfoPopupOpen, setIsInfoPopupOpen] =
     React.useState(false);
+  const [infoPopupStatus, setInfoPopupStatus] = React.useState({ src: '', message: '' })
 
   const [successPopupOpen, setSuccessPopupOpen] = React.useState(false);
   const [failPopupOpen, setFailPopupOpen] = React.useState(false);
@@ -113,8 +114,8 @@ React.useEffect(() => {
     setAddPlacePopupOpen(false);
     setEditAvatarPopupOpen(false);
     setIsImagePopupOpen(false);
-    setFailPopupOpen(false);
-    setSuccessPopupOpen(false);
+    setIsInfoPopupOpen(false)
+ 
   }
 
   function handleCardClick(card) {
@@ -149,9 +150,7 @@ React.useEffect(() => {
       });
   }
   function handleCardLike(card) {
-    console.log(card.likes);
-    const isLiked = card.likes.some((i) => i === currentUser._id);
-
+    const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api
       .changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
@@ -190,6 +189,11 @@ React.useEffect(() => {
   }
 
 
+
+function handleInfoPopupOpen() {
+        setIsInfoPopupOpen(true);
+}
+
   function authorization(email, password) {
     auth.authorize(email, password);
     if (email !== emailValue) {
@@ -204,15 +208,30 @@ React.useEffect(() => {
     history.push("/sign-in");
   }
 
-  function notify() {
-    setIsSuccessTooltipStatus(true);
-  }
 
-  function handleInfoPopupOpen() {
-    isSuccessTooltipStatus
-      ? setFailPopupOpen(!failPopupOpen)
-      : setSuccessPopupOpen(!successPopupOpen);
-  }
+  function registration(email, password) {
+    auth.register(email, password)
+        .then(() => {
+            setInfoPopupStatus({
+                src: ok,
+                message: 'Вы успешно зарегистрировались!',
+            })
+            setTimeout(history.push, 3000, "/sign-in");
+        })
+        .catch(() => {
+            setInfoPopupStatus({
+                src: bad,
+                message: 'Что-то пошло не так! Попробуйте ещё раз.',
+            })
+            setTimeout(history.push, 3000, "/sign-up")
+            console.log('no');
+        })
+        .finally(() => {
+            handleInfoPopupOpen();
+            setTimeout(closeAllPopups, 4000);
+        })
+}
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <section className="page">
@@ -234,7 +253,7 @@ React.useEffect(() => {
             <Login authorization={authorization} popup={handleInfoPopupOpen} />
           </Route>
           <Route path="/sign-up">
-            <Register notify={notify} popup={handleInfoPopupOpen} />
+            <Register registration={registration}/>
           </Route>
           <Route path="/">
             {isLoggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
@@ -265,16 +284,9 @@ React.useEffect(() => {
           onClose={closeAllPopups}
         />
         <InfoTooltip
-          title="Вы успешно зарегистрировались!"
-          image={ok}
-          isOpen={successPopupOpen}
+          isOpen={isInfoPopupOpen}
           onClose={closeAllPopups}
-        />
-        <InfoTooltip
-          title="Что-то пошло не так! Попробуйте ещё раз."
-          image={bad}
-          isOpen={failPopupOpen}
-          onClose={closeAllPopups}
+          infoPopupStatus={infoPopupStatus}
         />
       </section>
     </CurrentUserContext.Provider>
