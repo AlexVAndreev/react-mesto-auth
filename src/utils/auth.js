@@ -26,7 +26,6 @@ export const authorize = (email, password) => {
         return data.token;
       }
     })
-    .catch((err) => console.log(err));
 };
 export const getContent = (token) => {
   return fetch(`${BASE_URL}/users/me`, {

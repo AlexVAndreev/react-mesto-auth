@@ -43,9 +43,6 @@ function App() {
     React.useState(false);
   const [infoPopupStatus, setInfoPopupStatus] = React.useState({ src: '', message: '' })
 
-  const [successPopupOpen, setSuccessPopupOpen] = React.useState(false);
-  const [failPopupOpen, setFailPopupOpen] = React.useState(false);
-
   const history = useHistory();
   React.useEffect(() => {
     api.getUserInfo()
