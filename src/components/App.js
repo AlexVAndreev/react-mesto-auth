@@ -38,6 +38,22 @@ function App() {
     message: "",
   });
   const history = useHistory();
+  
+  React.useEffect(() => {
+      const jwt = localStorage.getItem("jwt");
+      if (jwt) {
+        auth
+          .getContent(jwt)
+          .then((res) => {
+            if (res) {
+              setEmailValue(res.data.email);
+            }
+            setIsLoggedIn(true);
+            history.push("/");
+          })
+          .catch((err) => console.log(err));
+      }
+    }, []);
 
   React.useEffect(() => {
     if (isLoggedIn) {
@@ -62,22 +78,6 @@ function App() {
         });
     }
   }, [isLoggedIn]);
-
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      auth
-        .getContent(jwt)
-        .then((res) => {
-          if (res) {
-            setEmailValue(res.data.email);
-          }
-          setIsLoggedIn(true);
-          history.push("/");
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
 
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
