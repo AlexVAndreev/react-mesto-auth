@@ -1,8 +1,14 @@
+// "use strict";
+
+import { address } from "../utils/constants.js";
+
 class Api {
-  constructor(connectConfig) {
-    this._Url = connectConfig.Url;
-    this._headers = connectConfig.headers;
-  }
+  constructor(address) {
+    this._Url = address;
+    this._token = "";
+    this._headers = {
+      "Content-Type": "application/json",
+    };}
 
   _sendRequest(res) {
     if (res.ok) {
@@ -100,11 +106,7 @@ class Api {
 }
 
 const api = new Api({
-  Url: "https://mesto.nomoreparties.co/v1/cohort-44/",
-  headers: {
-    authorization: "ffd6e9d6-b49f-4571-8718-08d53cb3c5d8",
-    "Content-Type": "application/json",
-  },
+  address,
 });
 
 export default api;
