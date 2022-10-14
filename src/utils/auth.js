@@ -1,3 +1,5 @@
+import api from "./Api";
+
 export const BASE_URL = "https://awaback.nomoredomains.icu";
 
 export const register = (email, password) => {
@@ -20,9 +22,8 @@ export const authorize = (email, password) => {
   })
     .then((response) => checkResult(response))
     .then((data) => {
-      console.log(data);
+      // console.log(`+++DATA+++${data}`);
       if (data.token) {
-        console.log(data.token);
         localStorage.setItem("jwt", data.token);
         return data.token;
       }

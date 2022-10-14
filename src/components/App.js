@@ -38,28 +38,13 @@ function App() {
     message: "",
   });
   const history = useHistory();
-  
-  React.useEffect(() => {
-      const jwt = localStorage.getItem("jwt");
-      if (jwt) {
-        auth
-          .getContent(jwt)
-          .then((res) => {
-            if (res) {
-              setEmailValue(res.data.email);
-            }
-            setIsLoggedIn(true);
-            history.push("/");
-          })
-          .catch((err) => console.log(err));
-      }
-    }, []);
 
   React.useEffect(() => {
     if (isLoggedIn) {
       api
         .getUserInfo()
         .then((data) => {
+          console.log(`===DATA===${data}`);
           setCurrentUser(data);
         })
         .catch((err) => console.log(err));
@@ -78,6 +63,22 @@ function App() {
         });
     }
   }, [isLoggedIn]);
+
+  React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .getContent(jwt)
+        .then((res) => {
+          if (res) {
+            setEmailValue(res.data.email);
+          }
+          setIsLoggedIn(true);
+          history.push("/");
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
 
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
@@ -174,10 +175,11 @@ function App() {
   function authorize(email, password) {
     auth
       .authorize(email, password)
-      .then(() => {
+      .then((token) => {
         if (email !== emailValue) {
           setEmailValue(email);
         }
+        api.setHeadersAuth(token);
         setIsLoggedIn(true);
         history.push("/");
       })

@@ -3,8 +3,8 @@
 import { address } from "../utils/constants.js";
 
 class Api {
-  constructor(address) {
-    this._Url = address;
+  constructor(link) {
+    this._Url = link;
     this._token = "";
     this._headers = {
       "Content-Type": "application/json",
@@ -103,10 +103,11 @@ class Api {
       headers: this._headers,
     }).then((res) => this._sendRequest(res));
   }
+  setHeadersAuth(token) {
+    this._headers = { ...this._headers, Authorization: `Bearer ${token}` };
+  }
 }
 
-const api = new Api({
-  address,
-});
+const api = new Api('https://awaback.nomoredomains.icu/');
 
 export default api;
