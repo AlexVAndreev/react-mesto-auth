@@ -22,9 +22,10 @@ export const authorize = (email, password) => {
   })
     .then((response) => checkResult(response))
     .then((data) => {
-      // console.log(`+++DATA+++${data}`);
+      console.log(`+++DATA+++${data.token}`);
       if (data.token) {
         localStorage.setItem("jwt", data.token);
+        api.setHeadersAuth(data.token);
         return data.token;
       }
     });

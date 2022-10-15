@@ -1,7 +1,5 @@
 // "use strict";
 
-import { address } from "../utils/constants.js";
-
 class Api {
   constructor(link) {
     this._Url = link;

@@ -40,6 +40,24 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
+    if (jwt) {
+      auth
+        .getContent(jwt)
+        .then((res) => {
+          if (res) {
+            setEmailValue(res.data.email);
+          }
+          api.setHeadersAuth(jwt);
+          setIsLoggedIn(true);
+          history.push("/");
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
+
+  React.useEffect(() => {
     if (isLoggedIn) {
       api
         .getUserInfo()
@@ -63,22 +81,6 @@ function App() {
         });
     }
   }, [isLoggedIn]);
-
-  React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    if (jwt) {
-      auth
-        .getContent(jwt)
-        .then((res) => {
-          if (res) {
-            setEmailValue(res.data.email);
-          }
-          setIsLoggedIn(true);
-          history.push("/");
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
 
   function handleEditProfilePopupOpen() {
     setIsEditProfilePopupOpen(!isEditProfilePopupOpen);
