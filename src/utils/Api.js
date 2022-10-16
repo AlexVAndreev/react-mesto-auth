@@ -116,7 +116,7 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://awaback.nomoredomains.icu/',
+  baseUrl: 'https://awaback.nomoredomains.icu',
   headers: {
       Authorization: `${window.localStorage.getItem('jwt')}`,
       'Content-Type': 'application/json',

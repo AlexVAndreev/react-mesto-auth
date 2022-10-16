@@ -60,8 +60,9 @@ function App() {
 
 
   React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
     if (isLoggedIn) {
-      api.getUserInfo(localStorage.jwt)
+      api.getUserInfo(jwt)
         .then((data) => {
           console.log(`===DATA===${data}`);
           setCurrentUser(data);
@@ -71,9 +72,10 @@ function App() {
   }, [isLoggedIn]);
 
   React.useEffect(() => {
+    const jwt = localStorage.getItem("jwt");
     if (isLoggedIn) {
       api
-        .getInitialCards(localStorage.jwt)
+        .getInitialCards(jwt)
         .then((cards) => {
           setCards(cards);
         })
@@ -109,8 +111,9 @@ function App() {
   }
 
   function handleUpdateUser(data) {
+    const jwt = localStorage.getItem("jwt");
     api
-      .editProfile(data,localStorage.jwt)
+      .editProfile(data,jwt)
       .then((res) => {
         setCurrentUser(res);
       })
@@ -122,8 +125,9 @@ function App() {
       });
   }
   function handleUpdateAvatar(data) {
+    const jwt = localStorage.getItem("jwt");
     api
-      .changeAvatar(data,localStorage.jwt)
+      .changeAvatar(data,jwt)
       .then((res) => {
         setCurrentUser(res);
       })
