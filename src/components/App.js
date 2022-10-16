@@ -61,8 +61,7 @@ function App() {
 
   React.useEffect(() => {
     if (isLoggedIn) {
-      api
-        .getUserInfo(localStorage.jwt)
+      api.getUserInfo(localStorage.jwt)
         .then((data) => {
           console.log(`===DATA===${data}`);
           setCurrentUser(data);

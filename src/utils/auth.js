@@ -25,7 +25,7 @@ export const authorize = (email, password) => {
       console.log(`+++DATA+++${data.token}`);
       if (data.token) {
         localStorage.setItem("jwt", data.token);
-        api.setHeadersAuth(data.token);
+        // api.setHeadersAuth(data.token);
         return data.token;
       }
     });
