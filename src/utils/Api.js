@@ -1,4 +1,4 @@
-// "use strict";
+
 class Api {
   constructor(options) {
       this._url = options.baseUrl;
@@ -118,7 +118,7 @@ class Api {
 const api = new Api({
   baseUrl: 'https://awaback.nomoredomains.icu',
   headers: {
-      Authorization: `${window.localStorage.getItem('jwt')}`,
+       Authorization: `${window.localStorage.getItem('jwt')}`,
       'Content-Type': 'application/json',
   }
 });
