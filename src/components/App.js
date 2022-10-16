@@ -41,26 +41,28 @@ function App() {
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
+    console.log(`FFFFFFFF:${jwt}`);
     if (jwt) {
       auth
         .getContent(jwt)
         .then((res) => {
           if (res) {
             setEmailValue(res.data.email);
+            console.log('WWWWWW')
+            setIsLoggedIn(true);
+            history.push("/");
           }
-          api.setHeadersAuth(jwt);
-          setIsLoggedIn(true);
-          history.push("/");
+
         })
         .catch((err) => console.log(err));
     }
-  }, []);
+  }, [history]);
 
 
   React.useEffect(() => {
     if (isLoggedIn) {
       api
-        .getUserInfo()
+        .getUserInfo(localStorage.jwt)
         .then((data) => {
           console.log(`===DATA===${data}`);
           setCurrentUser(data);
@@ -72,7 +74,7 @@ function App() {
   React.useEffect(() => {
     if (isLoggedIn) {
       api
-        .getInitialCards()
+        .getInitialCards(localStorage.jwt)
         .then((cards) => {
           setCards(cards);
         })
@@ -109,7 +111,7 @@ function App() {
 
   function handleUpdateUser(data) {
     api
-      .changeUserInfo(data)
+      .editProfile(data,localStorage.jwt)
       .then((res) => {
         setCurrentUser(res);
       })
@@ -122,7 +124,7 @@ function App() {
   }
   function handleUpdateAvatar(data) {
     api
-      .changeAvatar(data)
+      .changeAvatar(data,localStorage.jwt)
       .then((res) => {
         setCurrentUser(res);
       })
@@ -134,30 +136,34 @@ function App() {
       });
   }
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((c) => (c._id === card._id ? newCard : c))
-        );
-      })
-      .catch((err) => {
-        console.log(`Ошибка:${err}`);
-      });
-  }
+    if (isLoggedIn) {
+        const jwt = localStorage.getItem('jwt');
 
-  function handleCardDelete(card) {
-    api
-      .deleteCard(card._id)
-      .then(() => {
-        const newCard = cards.filter((item) => item !== card);
-        setCards(newCard);
-      })
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
+        const isLiked = card.likes.some(i => i._id === currentUser._id);
+        const changeLike = isLiked ? api.deleteLike(card._id, jwt) : api.setLike(card._id, jwt);
+
+        changeLike.then((newCard) => {
+            setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        })
+            .catch((err) => console.log(err));
+    }
+}
+
+
+function handleCardDelete(card) {
+  if (isLoggedIn) {
+      const jwt = localStorage.getItem('jwt');
+
+      api.deleteCard(card._id, jwt).then((card) => {
+              console.log(card);
+              const newCard = cards.filter((c) => c._id !== card._id);
+              setCards(newCard);
+          })
+          .catch((err) => {
+              console.log(err);
+          });
   }
+}
   function handleAddCard(card) {
     api
       .addCard(card)
@@ -174,26 +180,21 @@ function App() {
     setIsInfoPopupOpen(true);
   }
 
-  function authorize(email, password) {
-    auth
-      .authorize(email, password)
-      .then((token) => {
-        if (email !== emailValue) {
-          setEmailValue(email);
-        }
-        api.setHeadersAuth(token);
-        setIsLoggedIn(true);
-        history.push("/");
-      })
-      .catch(() => {
-        setInfoPopupStatus({
-          src: bad,
-          message: "Логин или пароль неверный!",
+  function authorization(email, password) {
+    auth.authorize(email, password)
+        .then((token) => {
+                const jwt = token;
+                jwt && localStorage.setItem('jwt', jwt);
+
+                console.log(jwt, 'jwt');
+                setEmailValue(email);
+                setIsLoggedIn(true);
+                history.push('/');
+        })
+        .catch((err) => {
+            console.log(err);
         });
-        handleInfoPopupOpen();
-        setTimeout(closeAllPopups, 2000);
-      });
-  }
+}
 
   function signOut() {
     localStorage.removeItem("jwt");
@@ -243,7 +244,7 @@ function App() {
             onCardDelete={handleCardDelete}
           />
           <Route path="/sign-in">
-            <Login authorize={authorize} popup={handleInfoPopupOpen} />
+            <Login authorize={authorization} popup={handleInfoPopupOpen} />
           </Route>
           <Route path="/sign-up">
             <Register register={register} />
