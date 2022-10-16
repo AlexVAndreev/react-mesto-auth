@@ -61,7 +61,7 @@ function App() {
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    console.log(jwt);
+    console.log(`rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${jwt}`);
     if (isLoggedIn) {
       api.getUserInfo(jwt)
       .then((data) => {
