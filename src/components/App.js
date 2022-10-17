@@ -1,10 +1,10 @@
 import React from "react";
-import api from "../utils/Api";
+import {api} from "../utils/Api";
 import Header from "./Header";
 import Main from "./Main.js";
 import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
-import CurrentUserContext from "../context/CurrentUserContext";
+import {CurrentUserContext} from "../context/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -40,32 +40,27 @@ function App() {
   const history = useHistory();
 
   React.useEffect(() => {
-    const jwt = localStorage.getItem("jwt");
-    console.log(`FFFFFFFF:${jwt}`);
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
-      auth
-        .getContent(jwt)
-        .then((res) => {
-          if (res) {
-            setEmailValue(res.data.email);
-            console.log('WWWWWW')
-            setIsLoggedIn(true);
-            history.push("/");
-          }
-
-        })
-        .catch((err) => console.log(err));
+        auth.getContent(jwt)
+            .then((res) => {
+                if (res) {
+                    setIsLoggedIn(true);
+                    setEmailValue(res.email);
+                    history.push('/');
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
-  }, [history]);
-
+}, []);
 
   React.useEffect(() => {
     const jwt = localStorage.getItem("jwt");
-    console.log(`rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr${jwt}`);
     if (isLoggedIn) {
       api.getUserInfo(jwt)
       .then((data) => {
-          console.log(`===DATA===${data}`);
           setCurrentUser(data);
         })
         .catch((err) => console.log(err));
@@ -157,9 +152,7 @@ function App() {
 function handleCardDelete(card) {
   if (isLoggedIn) {
       const jwt = localStorage.getItem('jwt');
-
       api.deleteCard(card._id, jwt).then((card) => {
-              console.log(card);
               const newCard = cards.filter((c) => c._id !== card._id);
               setCards(newCard);
           })
@@ -169,8 +162,9 @@ function handleCardDelete(card) {
   }
 }
   function handleAddCard(card) {
+    const jwt = localStorage.getItem('jwt');
     api
-      .addCard(card)
+      .addCard(card,jwt)
       .then((newCard) => {
         setCards([newCard, ...cards]);
         closeAllPopups();

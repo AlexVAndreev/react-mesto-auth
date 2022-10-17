@@ -25,7 +25,6 @@ export const authorize = (email, password) => {
       console.log(`+++DATA+++${data.token}`);
       if (data.token) {
         localStorage.setItem("jwt", data.token);
-        // api.setHeadersAuth(data.token);
         return data.token;
       }
     });
@@ -39,8 +38,8 @@ export const getContent = (token) => {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then((response) => checkResult(response))
-    .then((data) => data);
+    .then((response) => checkResult(response)
+    )
 };
 
 function checkResult(res) {

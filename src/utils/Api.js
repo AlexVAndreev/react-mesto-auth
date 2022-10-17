@@ -45,7 +45,7 @@ class Api {
           .then(res => this._checkResult(res));
   }
 
-  addCard(name, link, token) {
+  addCard(card, token) {
       return fetch(`${this._url}/cards`, {
           method: 'POST',
           headers: {
@@ -53,8 +53,8 @@ class Api {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-              name: name,
-              link: link,
+              name: card.name,
+              link: card.link,
           })
       })
           .then(res => this._checkResult(res))
@@ -123,4 +123,4 @@ const api = new Api({
   }
 });
 
-export default { api }
+export { api }
